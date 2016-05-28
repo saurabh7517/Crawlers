@@ -7,11 +7,11 @@ import codecs
 
 ################ Code to Extract Email from Span tag ########################
 def string_extractor(unsorted_email):
-				# print unsorted_email
+				
 				array_email = unsorted_email.split("[")
-				# print array_email
+				
 				array_email_string = str(array_email[1])
-				# print array_email_string
+				
 				email_part = re.findall('"([^"]*)"', array_email_string)
 				final_email = ""
 				count = int(0)
@@ -28,7 +28,7 @@ def string_extractor(unsorted_email):
 						count = count + 1
 					else:
 						final_email = final_email + "." + i
-					# print count
+					
 				return final_email
 
 ################ saving data to CSV file ####################################
@@ -77,7 +77,7 @@ class DmozSpider(scrapy.Spider):
 
     def parse_page_contents(self, response):
         v_email = "Not Defined"
-        # person_data = ""
+        
         person_data = []
         affiliation = ""
         first = response.xpath(
@@ -86,7 +86,7 @@ class DmozSpider(scrapy.Spider):
             '//*[@id="details-body"]/table/tbody/tr[3]/td[2]/text()').extract()
         email = response.xpath(
             '//*[@id="details-body"]/table/tbody/tr[7]/td[2]/span').extract()
-        # print first[0] + " " + last[0]
+        
 
         affiliations = response.xpath(
             '//*[@id="affiliation-body"]/div/div/div/h4/a/text()').extract()
@@ -95,9 +95,7 @@ class DmozSpider(scrapy.Spider):
             x = str(x)
             x = x.replace("\n", "")
             affiliation = affiliation + "  " + x
-
-        # print affiliations
-        print "bhopu"
+       
     
         if(len(email) != 0):
             if(email[0] == "[This author has chosen not to make the email address public]"):
@@ -109,9 +107,7 @@ class DmozSpider(scrapy.Spider):
                 if(re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', final_email)):
                     v_email = final_email
 
-        # print v_email
-        # person_data = first[0] + "," + last[0] + \
-        #     "," + affiliation + "," + v_email
+
         person_data.append(first[0])
         person_data.append(last[0])
         person_data.append(affiliation)
